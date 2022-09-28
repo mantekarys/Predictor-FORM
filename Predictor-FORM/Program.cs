@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Predictor_FORM.Forms;
+using Predictor_FORM.Map;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +19,8 @@ namespace Predictor_FORM
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            //List<MapObject> c = new List<MapObject>();
+            //Application.Run(new GameWindow(new Map.Map("as",c)));
         }
     }
 }
