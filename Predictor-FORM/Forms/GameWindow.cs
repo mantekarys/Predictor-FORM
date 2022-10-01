@@ -36,13 +36,12 @@ namespace Predictor_FORM.Forms
         int which;
         Form1 form1;
 
-        internal GameWindow(Map.Map map, List<Character.Class> c, int which, Form1 form1)
+        internal GameWindow(Map.Map map, List<Character.Class> c, int which)
         {
             InitializeComponent();
             this.map = map;
             characters = c;
             this.which = which;
-            this.form1 = form1;
 
 
             this.MouseClick += Form_MouseDown;
@@ -54,8 +53,8 @@ namespace Predictor_FORM.Forms
 
 
             Timer newTimer = new Timer();
-            newTimer.Elapsed += new ElapsedEventHandler(Timer_Tick);
-            newTimer.Interval = 100;
+            newTimer.Elapsed += new ElapsedEventHandler(Send);
+            newTimer.Interval = 10;
             newTimer.Start();
         }
 
@@ -66,7 +65,7 @@ namespace Predictor_FORM.Forms
             this.Invalidate();
             //gw = new Forms.GameWindow(this.map, characters);
         }
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Send(object sender, EventArgs e)
         {
             var mouse = mouseClick;
             if (mouseClick == null)
@@ -76,7 +75,7 @@ namespace Predictor_FORM.Forms
             var mes = JsonConvert.SerializeObject((keys,mouse, which));
             ws.Send(mes);
 
-            keys.Clear();
+ 
             mouseClick = null;
         }
         private void Map_Load(object sender, EventArgs e)
@@ -108,13 +107,14 @@ namespace Predictor_FORM.Forms
             }
 
         }
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            //keys.Append(keyData);
-            //keys.Add(keyData);
-            keys.Add((Keys)keyData);
-            return true;
-        }
+        //protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        //{
+        //    //keys.Append(keyData);
+        //    //keys.Add(keyData);
+        //    keys.Add((Keys)keyData);
+        //    return true;
+        //}
+
         private void Form_MouseDown(object sender, MouseEventArgs e)
         {
             mouseClick = e;
@@ -127,7 +127,17 @@ namespace Predictor_FORM.Forms
 
         private void GameWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            form1.Close();
+            System.Windows.Forms.Application.Exit();
+        }
+
+        private void GameWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            keys.Add((Keys)e.KeyData);
+        }
+
+        private void GameWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            keys.Remove((Keys)e.KeyData);   
         }
     }
 }

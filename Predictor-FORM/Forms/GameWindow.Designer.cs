@@ -33,7 +33,8 @@
             // GameWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(709, 711);
+            this.ClientSize = new System.Drawing.Size(707, 703);
+            this.DoubleBuffered = true;
             this.MaximumSize = new System.Drawing.Size(725, 750);
             this.MinimumSize = new System.Drawing.Size(725, 750);
             this.Name = "GameWindow";
@@ -41,6 +42,8 @@
             this.Text = "GameWindow";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameWindow_FormClosed);
             this.Load += new System.EventHandler(this.Map_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameWindow_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GameWindow_KeyUp);
             this.ResumeLayout(false);
 
         }

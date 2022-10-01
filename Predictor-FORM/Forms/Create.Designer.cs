@@ -71,6 +71,7 @@
             this.Name = "Create";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Create_FormClosed);
             this.Load += new System.EventHandler(this.Create_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

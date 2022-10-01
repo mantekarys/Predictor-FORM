@@ -18,6 +18,7 @@ using Predictor_FORM.Map;
 
 
 using System.Threading;
+using Predictor_FORM.Forms;
 
 namespace Predictor_FORM
 {
@@ -49,7 +50,7 @@ namespace Predictor_FORM
             Console.WriteLine("Received from the server: " + e.Data);
             List<Character.Class> characters;
             (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
-            gw = new Forms.GameWindow(this.map, characters, which, this);
+            gw = new Forms.GameWindow(this.map, characters, which);
         }
 
         private void Create_Click(object sender, EventArgs e)
@@ -62,7 +63,9 @@ namespace Predictor_FORM
 
         private void Join_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            MatchesList matchesList = new MatchesList();
+            matchesList.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)
