@@ -35,13 +35,15 @@ namespace Predictor_FORM.Forms
         MouseEventArgs mousePos;
         int which;
         Form1 form1;
+        int matchId = 0;
 
-        internal GameWindow(Map.Map map, List<Character.Class> c, int which)
+        internal GameWindow(Map.Map map, List<Character.Class> c, int which, int matchId)
         {
             InitializeComponent();
             this.map = map;
             characters = c;
             this.which = which;
+            this.matchId = matchId;
 
 
             this.MouseClick += Form_MouseDown;
@@ -72,7 +74,7 @@ namespace Predictor_FORM.Forms
             {
                 mouse = mousePos;
             }
-            var mes = JsonConvert.SerializeObject((keys,mouse, which));
+            var mes = JsonConvert.SerializeObject((keys,mouse, which, matchId));
             ws.Send(mes);
 
  

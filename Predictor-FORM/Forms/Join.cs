@@ -81,7 +81,7 @@ namespace Predictor_FORM.Forms
             //}
             List<Character.Class> characters;
             (characters, this.map) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map)>(e.Data);
-            gw = new Forms.GameWindow(this.map, characters, which);
+            gw = new Forms.GameWindow(this.map, characters, which, matchId);
             this.Invalidate();
 
 
@@ -91,6 +91,7 @@ namespace Predictor_FORM.Forms
             base.OnPaint(e);
             if (gw != null)
             {
+                this.Hide();
                 gw.Show();
             }
 
