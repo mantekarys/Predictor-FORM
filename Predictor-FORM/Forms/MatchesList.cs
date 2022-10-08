@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebSocketSharp;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Logger = Predictor_FORM.Server.Logger;
 
 namespace Predictor_FORM.Forms
 {
@@ -70,24 +71,28 @@ namespace Predictor_FORM.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int index = listBox1.SelectedIndex;
-            if (index < 0)
+            Logger log = Logger.getInstance();
+            try
             {
-                index = 0;
+                int index = listBox1.SelectedIndex;
+                if (index < 0)
+                {
+                    index = 0;
+                }
+                int matchId = matchIds[index].Item1;
+                ws.OnMessage += whichMessage;
+                var mes = JsonConvert.SerializeObject((876, matchIds[index].Item1.ToString()));
+                ws.Send(mes);
+                Thread.Sleep(1000);
+                this.Hide();
+                Join join = new Forms.Join(matchId, which);
+                join.Show();
             }
-            int matchId = matchIds[index].Item1;
-            ws.OnMessage += whichMessage;
-            var mes = JsonConvert.SerializeObject((876, matchIds[index].Item1.ToString()));
-            ws.Send(mes);
-            Thread.Sleep(1000);
-            this.Hide();
-            Join join = new Forms.Join(matchId,which,ws);
-            join.Show();
-        }
-
-        private void MatchesList_Load(object sender, EventArgs e)
-        {
-
+            catch(Exception ex)
+            {
+                log.WriteMessage("Couldn't join any match");
+            }
+           
         }
     }
 }

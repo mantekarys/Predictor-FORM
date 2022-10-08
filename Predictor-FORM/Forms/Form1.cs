@@ -19,6 +19,7 @@ using Predictor_FORM.Map;
 
 using System.Threading;
 using Predictor_FORM.Forms;
+using Logger = Predictor_FORM.Server.Logger;
 
 namespace Predictor_FORM
 {
@@ -28,6 +29,7 @@ namespace Predictor_FORM
         Forms.GameWindow gw;
         WebSocket ws;
         int which;
+        Logger log = Logger.getInstance();
         public Form1()
         {
             InitializeComponent();
@@ -60,9 +62,11 @@ namespace Predictor_FORM
 
         private void Create_Click(object sender, EventArgs e)
         {
+
             this.Hide();
             //ws.OnMessage -= Ws_OnMessage;//
             Create create = new Create(ws);//
+            log.WriteMessage("Creating match");
             create.Show();
 
         }
