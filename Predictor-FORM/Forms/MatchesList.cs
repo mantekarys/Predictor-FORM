@@ -85,7 +85,7 @@ namespace Predictor_FORM.Forms
                 ws.Send(mes);
                 Thread.Sleep(1000);
                 this.Hide();
-                Join join = new Forms.Join(matchId, which);
+                Join join = new Forms.Join(matchId, which,ws);
                 join.Show();
             }
             catch(Exception ex)
