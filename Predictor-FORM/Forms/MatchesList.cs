@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebSocketSharp;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Logger = Predictor_FORM.Server.Logger;
 
 namespace Predictor_FORM.Forms
 {
@@ -68,23 +69,32 @@ namespace Predictor_FORM.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int index = listBox1.SelectedIndex;
-            if (index < 0)
+            Logger log = Logger.getInstance();
+            try
             {
-                index = 0;
+                int index = listBox1.SelectedIndex;
+                if (index < 0)
+                {
+                    index = 0;
+                }
+                int matchId = matchIds[index].Item1;
+                using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/Echo"))
+                {
+                    ws.OnMessage += whichMessage;
+                    ws.Connect();
+                    var mes = JsonConvert.SerializeObject((876, matchIds[index].Item1.ToString()));
+                    ws.Send(mes);
+                    Thread.Sleep(1000);
+                }
+                this.Hide();
+                Join join = new Forms.Join(matchId, which);
+                join.Show();
             }
-            int matchId = matchIds[index].Item1;
-            using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/Echo"))
+            catch(Exception ex)
             {
-                ws.OnMessage += whichMessage;
-                ws.Connect();
-                var mes = JsonConvert.SerializeObject((876, matchIds[index].Item1.ToString()));
-                ws.Send(mes);
-                Thread.Sleep(1000);
+                log.WriteMessage("Couldn't join any match");
             }
-            this.Hide();
-            Join join = new Forms.Join(matchId,which);
-            join.Show();
+           
         }
     }
 }
