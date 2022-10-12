@@ -44,6 +44,8 @@
             this.Load += new System.EventHandler(this.Map_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameWindow_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GameWindow_KeyUp);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameWindow_MouseDown);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameWindow_MouseUp);
             this.ResumeLayout(false);
 
         }
