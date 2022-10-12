@@ -49,7 +49,7 @@ namespace Predictor_FORM
         {
             Console.WriteLine("Received from the server: " + e.Data);
             List<Character.Class> characters;
-            (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
+            (characters, this.map,which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map,int)>(e.Data);
             gw = new Forms.GameWindow(this.map, characters, which,0);
         }
 

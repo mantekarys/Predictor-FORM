@@ -28,6 +28,7 @@ namespace Predictor_FORM.Forms
     {
         Map.Map map;
         List<Character.Class> characters;
+        List<PickUp> pickables;
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
         WebSocket ws;
@@ -44,7 +45,7 @@ namespace Predictor_FORM.Forms
             characters = c;
             this.which = which;
             this.matchId = matchId;
-
+            this.pickables = new List<PickUp>() { new DamagePowerUp((350, 350)) };
 
             this.MouseClick += Form_MouseDown;
             this.MouseMove += Form_MouseMove;
@@ -107,7 +108,13 @@ namespace Predictor_FORM.Forms
                 g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
 
             }
+            brushR = new SolidBrush(Color.FromArgb(160, 160, 160));
+            foreach (var picks in pickables)
+            {
+                //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+                g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, 3, 3);
 
+            }
         }
         //protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         //{
