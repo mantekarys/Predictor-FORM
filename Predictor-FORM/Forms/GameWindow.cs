@@ -21,6 +21,7 @@ using WebSocketSharp;
 using Newtonsoft.Json;
 using System.Timers;
 using Timer = System.Timers.Timer;
+using Predictor_FORM.Character;
 
 namespace Predictor_FORM.Forms
 {
@@ -28,6 +29,7 @@ namespace Predictor_FORM.Forms
     {
         Map.Map map;
         List<Character.Class> characters;
+        List<Projectile> projectiles = new List<Projectile>();
         List<PickUp> pickables;
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
@@ -48,8 +50,9 @@ namespace Predictor_FORM.Forms
             this.matchId = matchId;
             this.pickables = new List<PickUp>() { new DamagePowerUp((350, 350)) };
 
-            this.MouseClick += Form_MouseDown;
-            this.MouseMove += Form_MouseMove;
+
+
+
 
             ws = wsOld;
             ws.OnMessage += Ws_OnMessage;
@@ -58,28 +61,23 @@ namespace Predictor_FORM.Forms
 
             Timer newTimer = new Timer();
             newTimer.Elapsed += new ElapsedEventHandler(Send);
-            newTimer.Interval = 10;
+            newTimer.Interval = 20;
             newTimer.Start();
         }
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
-            (characters, this.map, pickables) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map,List<PickUp> pickUps)>(e.Data);
+            (characters, this.map, pickables, this.projectiles) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map, List<PickUp>, List<Projectile>) >(e.Data);
             this.Invalidate();
             //gw = new Forms.GameWindow(this.map, characters);
         }
         private void Send(object sender, EventArgs e)
         {
-            var mouse = mouseClick;
-            if (mouseClick == null)
-            {
-                mouse = mousePos;
-            }
-            var mes = JsonConvert.SerializeObject((keys,mouse, which, matchId));
+            var relativePoint = this.PointToClient(Cursor.Position);
+            (int, int) mouse = (relativePoint.X, relativePoint.Y);
+            var mes = JsonConvert.SerializeObject((keys.ToList(),mouse, which, matchId));
             ws.Send(mes);
-
- 
             mouseClick = null;
         }
         private void Map_Load(object sender, EventArgs e)
@@ -103,10 +101,14 @@ namespace Predictor_FORM.Forms
             //g.FillRectangle(brush, 5, 5, map.size, map.size);
 
             SolidBrush brushR = new SolidBrush(Color.FromArgb(255, 0, 255));
+            SolidBrush brushProj = new SolidBrush(Color.FromArgb(255, 165, 0));
             foreach (var c in characters)
             {
                 //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
-                g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+            foreach (var c in projectiles)
+            {
+                //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+                g.FillRectangle(brushProj, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
 
             }
             brushR = new SolidBrush(Color.FromArgb(88, 233, 243));
@@ -114,6 +116,9 @@ namespace Predictor_FORM.Forms
             {
                 //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
                 g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, 4, 4);
+                g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+
+            }
 
             }
         }
@@ -125,15 +130,6 @@ namespace Predictor_FORM.Forms
         //    return true;
         //}
 
-        private void Form_MouseDown(object sender, MouseEventArgs e)
-        {
-            mouseClick = e;
-        }
-
-        private void Form_MouseMove(object sender, MouseEventArgs e)
-        {
-            mousePos = e;
-        }
 
         private void GameWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -144,10 +140,20 @@ namespace Predictor_FORM.Forms
         {
             keys.Add((Keys)e.KeyData);
         }
-
+        
         private void GameWindow_KeyUp(object sender, KeyEventArgs e)
         {
             keys.Remove((Keys)e.KeyData);   
+        }
+
+        private void GameWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            keys.Add(Keys.LButton);
+        }
+
+        private void GameWindow_MouseUp(object sender, MouseEventArgs e)
+        {
+            keys.Remove(Keys.LButton);
         }
     }
 }

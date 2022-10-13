@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Character\Character.cs" />
     <Compile Include="Character\Class.cs" />
+    <Compile Include="Character\Projectile.cs" />
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
