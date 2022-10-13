@@ -103,8 +103,12 @@ namespace Predictor_FORM.Forms
                 g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
 
             }
-            foreach (var c in projectiles)
+            foreach (var c in projectiles.ToList())
             {
+                if (c == null)
+                {
+                    continue;
+                }
                 //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
                 g.FillRectangle(brushProj, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
 
