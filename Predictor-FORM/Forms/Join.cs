@@ -56,9 +56,9 @@ namespace Predictor_FORM.Forms
         {
             Console.WriteLine("Received from the server: " + e.Data);
             int count = e.Data.Count(x => x == ':');
-            List<Character.Class> characters;
-            (characters, this.map) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map)>(e.Data);
-            gw = new Forms.GameWindow(this.map, characters, which, matchId, ws);
+            List<Character.Player> players;
+            (players, this.map) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map)>(e.Data);
+            gw = new Forms.GameWindow(this.map, players, which, matchId, ws);
             this.Invalidate();
         }
         protected override void OnPaint(PaintEventArgs e)

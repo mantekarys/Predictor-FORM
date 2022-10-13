@@ -28,7 +28,7 @@ namespace Predictor_FORM.Forms
     public partial class GameWindow : Form
     {
         Map.Map map;
-        List<Character.Class> characters;
+        List<Character.Player> players;
         List<Projectile> projectiles = new List<Projectile>();
         List<PickUp> pickables;
         List<MapObject> mapObjects = new List<MapObject>();
@@ -44,11 +44,11 @@ namespace Predictor_FORM.Forms
         int matchId = 0;
         bool first = true;
 
-        internal GameWindow(Map.Map map, List<Character.Class> c, int which, int matchId, WebSocket wsOld)
+        internal GameWindow(Map.Map map, List<Character.Player> p, int which, int matchId, WebSocket wsOld)
         {
             InitializeComponent();
             this.map = map;
-            characters = c;
+            players = p;
             this.which = which;
             this.matchId = matchId;
             this.pickables = new List<PickUp>() { new DamagePowerUp((350, 350)) };
@@ -66,7 +66,7 @@ namespace Predictor_FORM.Forms
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
-            (characters, this.map, pickables, this.projectiles, this.traps, this.obstacles) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>)>(e.Data);
+            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>)>(e.Data);
             
             if (this.mapObjects.Count > this.traps.Count + this.obstacles.Count || first)
             {
@@ -106,8 +106,9 @@ namespace Predictor_FORM.Forms
             }
             SolidBrush brushR = new SolidBrush(Color.FromArgb(255, 0, 255));
             SolidBrush brushProj = new SolidBrush(Color.FromArgb(255, 165, 0));
-            foreach (var c in characters)
+            foreach (var p in players)
             {
+                var c = p.playerClass;
                 g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
             }
             foreach (var c in projectiles.ToList())

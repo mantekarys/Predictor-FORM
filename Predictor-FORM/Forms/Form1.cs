@@ -43,11 +43,11 @@ namespace Predictor_FORM
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
-            Console.WriteLine("Received from the server: " + e.Data);
-            List<Character.Class> characters;
-            (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
-            ws.OnMessage -= Ws_OnMessage;
-            gw = new Forms.GameWindow(this.map, characters, which, 0, ws);
+            //Console.WriteLine("Received from the server: " + e.Data);
+            //List<Character.Class> characters;
+            //(characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
+            //ws.OnMessage -= Ws_OnMessage;
+            //gw = new Forms.GameWindow(this.map, characters, which, 0, ws);
         }
 
         private void Create_Click(object sender, EventArgs e)
