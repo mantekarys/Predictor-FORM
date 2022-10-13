@@ -19,7 +19,6 @@ namespace Predictor_FORM.Forms
     {
         List<(int, string)> matchIds;
         int which;
-
         WebSocket ws;//
         public MatchesList(WebSocket wsOld)
         {
@@ -85,14 +84,13 @@ namespace Predictor_FORM.Forms
                 ws.Send(mes);
                 Thread.Sleep(1000);
                 this.Hide();
-                Join join = new Forms.Join(matchId, which,ws);
+                Join join = new Forms.Join(matchId, which, ws);
                 join.Show();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.WriteMessage("Couldn't join any match");
             }
-           
         }
     }
 }

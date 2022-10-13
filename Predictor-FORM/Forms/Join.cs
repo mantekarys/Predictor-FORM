@@ -22,7 +22,6 @@ namespace Predictor_FORM.Forms
         Forms.GameWindow gw;
         int which;
         int ready = 1;
-
         public WebSocket ws;
         public Join(int matchId, int which, WebSocket wsOld)
         {
@@ -32,7 +31,6 @@ namespace Predictor_FORM.Forms
             listBox1.Items.Add("Rogue");
             listBox1.Items.Add("Tank");
             listBox1.Items.Add("Gunner");
-
             ws = wsOld;
         }
 

@@ -21,8 +21,8 @@ namespace Predictor_FORM.Server
         public void WriteMessage(string message)
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-           // string path = "C:\\Users\\rokbar6\\Desktop\\Log.txt";
-            string path2 = Path.Combine(path,  "log.txt");
+            // string path = "C:\\Users\\rokbar6\\Desktop\\Log.txt";
+            string path2 = Path.Combine(path, "log.txt");
             using (StreamWriter sw = File.AppendText(path2))
             {
                 sw.WriteLine(string.Format("{0}: {1}", DateTime.Now, message));

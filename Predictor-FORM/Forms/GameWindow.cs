@@ -31,6 +31,9 @@ namespace Predictor_FORM.Forms
         List<Character.Class> characters;
         List<Projectile> projectiles = new List<Projectile>();
         List<PickUp> pickables;
+        List<MapObject> mapObjects = new List<MapObject>();
+        List<Trap> traps = new List<Trap>();
+        List<Obstacle> obstacles = new List<Obstacle>();
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
         public WebSocket ws;
@@ -39,9 +42,9 @@ namespace Predictor_FORM.Forms
         int which;
         Form1 form1;
         int matchId = 0;
+        bool first = true;
 
-
-        internal GameWindow(Map.Map map, List<Character.Class> c, int which, int matchId,WebSocket wsOld)
+        internal GameWindow(Map.Map map, List<Character.Class> c, int which, int matchId, WebSocket wsOld)
         {
             InitializeComponent();
             this.map = map;
@@ -52,23 +55,30 @@ namespace Predictor_FORM.Forms
 
 
 
-
-
             ws = wsOld;
             ws.OnMessage += Ws_OnMessage;
-            //ws.Connect();
+            ws.Connect();
 
 
             Timer newTimer = new Timer();
             newTimer.Elapsed += new ElapsedEventHandler(Send);
-            newTimer.Interval = 20;
+            newTimer.Interval = 10;
             newTimer.Start();
         }
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
-            (characters, this.map, pickables, this.projectiles) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map, List<PickUp>, List<Projectile>) >(e.Data);
+            (characters, this.map, pickables, this.projectiles, this.traps, this.obstacles) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>)>(e.Data);
+            
+            if (this.mapObjects.Count > this.traps.Count + this.obstacles.Count || first)
+            {
+                this.mapObjects.Clear();
+                this.mapObjects.AddRange(this.obstacles);
+                this.mapObjects.AddRange(this.traps);
+                first = false;
+            }
+
             this.Invalidate();
             //gw = new Forms.GameWindow(this.map, characters);
         }
@@ -79,7 +89,6 @@ namespace Predictor_FORM.Forms
             var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId));
             ws.Send(mes);
             mouseClick = null;
-
         }
         private void Map_Load(object sender, EventArgs e)
         {
@@ -98,6 +107,11 @@ namespace Predictor_FORM.Forms
             Pen myPen = new Pen(Color.Red);
             myPen.Width = 2;
             g.DrawRectangle(myPen, 5, 5, map.size, map.size);
+            foreach(var mo in mapObjects)
+            {
+                SolidBrush brusht = new SolidBrush(Color.FromName(mo.color));
+                g.FillRectangle(brusht, mo.coordinates.Item1, mo.coordinates.Item2, mo.size, mo.size);
+            }
             SolidBrush brush = new SolidBrush(Color.GreenYellow);
             //g.FillRectangle(brush, 5, 5, map.size, map.size);
 
@@ -146,7 +160,7 @@ namespace Predictor_FORM.Forms
         {
             keys.Add((Keys)e.KeyData);
         }
-        
+
         private void GameWindow_KeyUp(object sender, KeyEventArgs e)
         {
             keys.Remove((Keys)e.KeyData);   

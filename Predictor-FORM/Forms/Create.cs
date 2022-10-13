@@ -24,7 +24,6 @@ namespace Predictor_FORM
         {
             InitializeComponent();
             ws = wsOld;
-            
         }
 
         private void Create_Load(object sender, EventArgs e)
@@ -43,8 +42,6 @@ namespace Predictor_FORM
             join.ws.OnMessage -= Ws_OnMessage;
             this.Hide();
             join.Show();
-
-
         }
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
@@ -52,7 +49,6 @@ namespace Predictor_FORM
             int matchId, which;
             (matchId, which) = JsonConvert.DeserializeObject<(int,int)>(e.Data);
             join = new Forms.Join(matchId, which, ws);
-
         }
 
         private void Create_FormClosed(object sender, FormClosedEventArgs e)

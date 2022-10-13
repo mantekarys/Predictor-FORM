@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Predictor_FORM.Map;
+using Logger = Predictor_FORM.Server.Logger;
 
 
 using System.Threading;
@@ -57,13 +58,11 @@ namespace Predictor_FORM
 
             (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
             ws.OnMessage -= Ws_OnMessage;//
-            gw = new Forms.GameWindow(this.map, characters, which,0,ws);
-
+            gw = new Forms.GameWindow(this.map, characters, which, 0, ws);
         }
 
         private void Create_Click(object sender, EventArgs e)
         {
-
             this.Hide();
             //ws.OnMessage -= Ws_OnMessage;//
             Create create = new Create(ws);//
