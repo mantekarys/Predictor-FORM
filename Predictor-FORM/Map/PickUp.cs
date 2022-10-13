@@ -7,7 +7,7 @@ using Predictor_FORM.Character;
 
 namespace Predictor_FORM.Map
 {
-    public abstract class PickUp
+    public class PickUp
     {
         public  string name { get; set; }
         public  string description { get; set; }
