@@ -28,6 +28,7 @@ namespace Predictor_FORM.Forms
     {
         Map.Map map;
         List<Character.Class> characters;
+        List<PickUp> pickables;
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
         public WebSocket ws;
@@ -45,7 +46,7 @@ namespace Predictor_FORM.Forms
             characters = c;
             this.which = which;
             this.matchId = matchId;
-
+            this.pickables = new List<PickUp>() { new DamagePowerUp((350, 350)) };
 
             this.MouseClick += Form_MouseDown;
             this.MouseMove += Form_MouseMove;
@@ -64,7 +65,7 @@ namespace Predictor_FORM.Forms
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
-            (characters, this.map) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map)>(e.Data);
+            (characters, this.map, pickables) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map,List<PickUp> pickUps)>(e.Data);
             this.Invalidate();
             //gw = new Forms.GameWindow(this.map, characters);
         }
@@ -108,7 +109,13 @@ namespace Predictor_FORM.Forms
                 g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
 
             }
+            brushR = new SolidBrush(Color.FromArgb(88, 233, 243));
+            foreach (var picks in pickables)
+            {
+                //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+                g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, 4, 4);
 
+            }
         }
         //protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         //{
