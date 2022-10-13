@@ -60,7 +60,7 @@ namespace Predictor_FORM.Forms
 
             Timer newTimer = new Timer();
             newTimer.Elapsed += new ElapsedEventHandler(Send);
-            newTimer.Interval = 10;
+            newTimer.Interval = 20;
             newTimer.Start();
         }
 
