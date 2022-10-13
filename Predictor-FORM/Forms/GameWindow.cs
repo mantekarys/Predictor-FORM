@@ -33,7 +33,7 @@ namespace Predictor_FORM.Forms
         List<Obstacle> obstacles = new List<Obstacle>();
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
-        WebSocket ws;
+        public WebSocket ws;
 
         MouseEventArgs mousePos;
         int which;
@@ -41,7 +41,7 @@ namespace Predictor_FORM.Forms
         int matchId = 0;
         bool first = true;
 
-        internal GameWindow(Map.Map map, List<Character.Class> c, int which, int matchId)
+        internal GameWindow(Map.Map map, List<Character.Class> c, int which, int matchId, WebSocket wsOld)
         {
             InitializeComponent();
             this.map = map;
@@ -53,9 +53,9 @@ namespace Predictor_FORM.Forms
             this.MouseClick += Form_MouseDown;
             this.MouseMove += Form_MouseMove;
 
-            ws = new WebSocket("ws://127.0.0.1:7890/EchoAll");
+            ws = wsOld;
             ws.OnMessage += Ws_OnMessage;
-            ws.Connect();
+            //ws.Connect();
 
 
             Timer newTimer = new Timer();
