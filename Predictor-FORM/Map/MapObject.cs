@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Predictor_FORM.Map
 {
-    internal abstract class  MapObject
+    public abstract class  MapObject
     {
         public int size;
         public (int, int) coordinates;
+        public string color;
     }
 }
