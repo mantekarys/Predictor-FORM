@@ -19,6 +19,7 @@ using Predictor_FORM.Map;
 
 using System.Threading;
 using Predictor_FORM.Forms;
+using Logger = Predictor_FORM.Server.Logger;
 
 namespace Predictor_FORM
 {
@@ -26,7 +27,9 @@ namespace Predictor_FORM
     {
         Map.Map map;
         Forms.GameWindow gw;
+        WebSocket ws;
         int which;
+        Logger log = Logger.getInstance();
         public Form1()
         {
             InitializeComponent();
@@ -34,6 +37,8 @@ namespace Predictor_FORM
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ws = new WebSocket("ws://127.0.0.1:7890/Echo");//
+            ws.Connect();//
             //MapObject m = new MapObject();
             //using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/Echo"))
             //{
@@ -49,14 +54,20 @@ namespace Predictor_FORM
         {
             Console.WriteLine("Received from the server: " + e.Data);
             List<Character.Class> characters;
-            (characters, this.map,which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map,int)>(e.Data);
-            gw = new Forms.GameWindow(this.map, characters, which,0);
+
+            (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
+            ws.OnMessage -= Ws_OnMessage;//
+            gw = new Forms.GameWindow(this.map, characters, which,0,ws);
+
         }
 
         private void Create_Click(object sender, EventArgs e)
         {
+
             this.Hide();
-            Create create = new Create();
+            //ws.OnMessage -= Ws_OnMessage;//
+            Create create = new Create(ws);//
+            log.WriteMessage("Creating match");
             create.Show();
 
         }
@@ -64,23 +75,19 @@ namespace Predictor_FORM
         private void Join_Click(object sender, EventArgs e)
         {
             this.Hide();
-            MatchesList matchesList = new MatchesList();
+            //ws.OnMessage -= Ws_OnMessage;//
+            MatchesList matchesList = new MatchesList(ws);//
             matchesList.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/Echo"))
-            {
-
-                ws.OnMessage += Ws_OnMessage;
-                ws.Connect();
-                var mes = JsonConvert.SerializeObject(159);
-                ws.Send(mes);
-                Thread.Sleep(1000);
-                gw.Show();
-            }
+            var mes = JsonConvert.SerializeObject(159);
+            ws.OnMessage += Ws_OnMessage;
+            ws.Send(mes);
+            Thread.Sleep(1000);
+            gw.Show();
         }
     }
 }
