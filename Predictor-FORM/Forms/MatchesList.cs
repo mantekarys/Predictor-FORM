@@ -19,13 +19,13 @@ namespace Predictor_FORM.Forms
     {
         List<(int, string)> matchIds;
         int which;
-        WebSocket ws;//
+        WebSocket ws;
         public MatchesList(WebSocket wsOld)
         {
             InitializeComponent();
 
-            ws = wsOld;//
-            ws.OnMessage += Ws_OnMessage;//
+            ws = wsOld;
+            ws.OnMessage += Ws_OnMessage;
 
             var mes = JsonConvert.SerializeObject(999);
             ws.Send(mes);
@@ -34,7 +34,6 @@ namespace Predictor_FORM.Forms
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
@@ -46,16 +45,7 @@ namespace Predictor_FORM.Forms
             }
             ws.OnMessage -= Ws_OnMessage;
         }
-        //private void matchMessage(object sender, MessageEventArgs e)
-        //{
-        //    Console.WriteLine("Received from the server: " + e.Data);
-        //    List<(int, string)> matchIds = new List<(int, string)>();
-        //    matchIds = JsonConvert.DeserializeObject<List<(int, string)>>(e.Data);
-        //    foreach (var item in matchIds)
-        //    {
-        //        listBox1.Items.Add(item.Item2);
-        //    }
-        //}
+
         private void whichMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);

@@ -28,7 +28,6 @@ namespace Predictor_FORM
 
         private void Create_Load(object sender, EventArgs e)
         {
-
         }
 
         private void CreateMatch_Click(object sender, EventArgs e)
@@ -38,7 +37,6 @@ namespace Predictor_FORM
             ws.Send(mes);
             Thread.Sleep(1000);
 
-            //ws.OnMessage -= Ws_OnMessage;
             join.ws.OnMessage -= Ws_OnMessage;
             this.Hide();
             join.Show();

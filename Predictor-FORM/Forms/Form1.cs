@@ -20,7 +20,6 @@ using Logger = Predictor_FORM.Server.Logger;
 
 using System.Threading;
 using Predictor_FORM.Forms;
-using Logger = Predictor_FORM.Server.Logger;
 
 namespace Predictor_FORM
 {
@@ -38,44 +37,31 @@ namespace Predictor_FORM
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ws = new WebSocket("ws://127.0.0.1:7890/Echo");//
-            ws.Connect();//
-            //MapObject m = new MapObject();
-            //using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/Echo"))
-            //{
-            //    ws.OnMessage += Ws_OnMessage;
-
-            //    ws.Connect();
-            //    ws.Send("Hello from PCamp!");
-            //}
-
+            ws = new WebSocket("ws://127.0.0.1:7890/Echo");
+            ws.Connect();
         }
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
             List<Character.Class> characters;
-
             (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>,Map.Map, int)>(e.Data);
-            ws.OnMessage -= Ws_OnMessage;//
+            ws.OnMessage -= Ws_OnMessage;
             gw = new Forms.GameWindow(this.map, characters, which, 0, ws);
         }
 
         private void Create_Click(object sender, EventArgs e)
         {
             this.Hide();
-            //ws.OnMessage -= Ws_OnMessage;//
-            Create create = new Create(ws);//
+            Create create = new Create(ws);
             log.WriteMessage("Creating match");
             create.Show();
-
         }
 
         private void Join_Click(object sender, EventArgs e)
         {
             this.Hide();
-            //ws.OnMessage -= Ws_OnMessage;//
-            MatchesList matchesList = new MatchesList(ws);//
+            MatchesList matchesList = new MatchesList(ws);
             matchesList.Show();
         }
 

@@ -36,7 +36,6 @@ namespace Predictor_FORM.Forms
 
         private void Join_Load(object sender, EventArgs e)
         {
-
         }
 
         private void Join_FormClosed(object sender, FormClosedEventArgs e)
@@ -46,45 +45,21 @@ namespace Predictor_FORM.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/Echo"))
-            //{
-            //    ws.OnMessage += Ws_OnMessage;
-            //    ws.Connect();
-            //    var mes = JsonConvert.SerializeObject((545, matchId, listBox1.SelectedItem, this.ready ,this.which));
-            //    ws.Send(mes);
-            //    this.ready *= -1;
-            //    Thread.Sleep(1000);
-            //}
-
             ws.OnMessage += Ws_OnMessage;
             var mes = JsonConvert.SerializeObject((545, matchId, listBox1.SelectedItem, this.ready, this.which));
             ws.Send(mes);
             this.ready *= -1;
             Thread.Sleep(1000);
-            //if (gw != null)
-            //{
-            //    gw.Show();
-            //}
-
         }
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
             int count = e.Data.Count(x => x == ':');
-            //if (count == 3)
-            //{
-            //    //string text = JsonConvert.DeserializeObject<string>(e.Data);
-            //    List<Character.Class> characters;
-            //    (characters, this.map, which) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map, int)>(e.Data);
-            //    gw = new Forms.GameWindow(this.map, characters, which);
-            //}
             List<Character.Class> characters;
             (characters, this.map) = JsonConvert.DeserializeObject<(List<Character.Class>, Map.Map)>(e.Data);
             gw = new Forms.GameWindow(this.map, characters, which, matchId, ws);
             this.Invalidate();
-
-
         }
         protected override void OnPaint(PaintEventArgs e)
         {

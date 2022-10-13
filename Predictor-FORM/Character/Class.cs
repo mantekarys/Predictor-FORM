@@ -27,16 +27,8 @@ namespace Predictor_FORM.Character
             //send other parameters on start or when took an upgrade
         }
 
-        public override void move()//event
+        public override void move()
         {
-            using (WebSocket ws = new WebSocket("ws://127.0.0.1:7890/EchoAll"))
-            {
-
-                ws.Connect();
-
-                //var mes = JsonConvert.SerializeObject<Message>(e.Data);
-                //ws.Send(mes);
-            }
         }
     }
 }
