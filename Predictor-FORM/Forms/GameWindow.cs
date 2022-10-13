@@ -74,11 +74,12 @@ namespace Predictor_FORM.Forms
         }
         private void Send(object sender, EventArgs e)
         {
-            var relativePoint = this.PointToClient(Cursor.Position);
+            var relativePoint = Cursor.Position;//this.PointToClient(Cursor.Position);//Cursor.Positiont;
             (int, int) mouse = (relativePoint.X, relativePoint.Y);
-            var mes = JsonConvert.SerializeObject((keys.ToList(),mouse, which, matchId));
+            var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId));
             ws.Send(mes);
             mouseClick = null;
+
         }
         private void Map_Load(object sender, EventArgs e)
         {
@@ -105,8 +106,14 @@ namespace Predictor_FORM.Forms
             foreach (var c in characters)
             {
                 //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
-            foreach (var c in projectiles)
+                g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+            }
+            foreach (var c in projectiles.ToList())
             {
+                if (c == null)
+                {
+                    continue;
+                }
                 //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
                 g.FillRectangle(brushProj, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
 
@@ -116,11 +123,10 @@ namespace Predictor_FORM.Forms
             {
                 //g.DrawRectangle(myPen, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
                 g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, 4, 4);
-                g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+                
 
             }
 
-            }
         }
         //protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         //{
