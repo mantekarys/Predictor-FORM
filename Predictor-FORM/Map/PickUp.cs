@@ -13,6 +13,7 @@ namespace Predictor_FORM.Map
         public  string description { get; set; }
         public  int experationTime { get; set; }
         public  int remainingTime { get; set; }
+        public readonly int size = 6;
         public (int, int) coordinates;
         //public abstract void pickedUp(Class @class);
     }

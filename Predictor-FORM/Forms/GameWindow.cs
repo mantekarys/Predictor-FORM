@@ -122,7 +122,7 @@ namespace Predictor_FORM.Forms
             brushR = new SolidBrush(Color.FromArgb(88, 233, 243));
             foreach (var picks in pickables)
             {
-                g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, 4, 4);
+                g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, picks.size, picks.size);
             }
         }
         private void GameWindow_FormClosed(object sender, FormClosedEventArgs e)
