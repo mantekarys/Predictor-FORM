@@ -73,6 +73,7 @@ namespace Predictor_FORM
             ws.Send(mes);
             Thread.Sleep(1000);
             gw.Show();
+
         }
     }
 }

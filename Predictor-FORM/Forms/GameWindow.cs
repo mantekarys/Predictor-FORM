@@ -38,6 +38,9 @@ namespace Predictor_FORM.Forms
         MouseEventArgs mouseClick;
         public WebSocket ws;
 
+
+        List<Npc> npcs = new List<Npc>();
+
         MouseEventArgs mousePos;
         int which;
         Form1 form1;
@@ -66,7 +69,7 @@ namespace Predictor_FORM.Forms
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
-            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>)>(e.Data);
+            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles, this.npcs) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>, List<Npc>)>(e.Data);
             
             if (this.mapObjects.Count > this.traps.Count + this.obstacles.Count || first)
             {
@@ -106,6 +109,7 @@ namespace Predictor_FORM.Forms
             }
             SolidBrush brushR = new SolidBrush(Color.FromArgb(255, 0, 255));
             SolidBrush brushProj = new SolidBrush(Color.FromArgb(255, 165, 0));
+            SolidBrush brushNpc = new SolidBrush(Color.Green);
             foreach (var p in players)
             {
                 var c = p.playerClass;
@@ -123,6 +127,16 @@ namespace Predictor_FORM.Forms
             foreach (var picks in pickables)
             {
                 g.FillRectangle(brushR, picks.coordinates.Item1, picks.coordinates.Item2, 4, 4);
+            }
+
+
+            foreach (var n in npcs)
+            {
+                //if (n == null)
+                //{
+                //    continue;
+                //}
+                g.FillRectangle(brushNpc, n.coordinates.Item1, n.coordinates.Item2, n.size, n.size);
             }
         }
         private void GameWindow_FormClosed(object sender, FormClosedEventArgs e)
