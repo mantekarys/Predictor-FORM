@@ -37,6 +37,7 @@ namespace Predictor_FORM.Forms
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
         public WebSocket ws;
+        bool dead = false;
 
 
         List<Npc> npcs = new List<Npc>();
@@ -82,11 +83,14 @@ namespace Predictor_FORM.Forms
         }
         private void Send(object sender, EventArgs e)
         {
-            var relativePoint = Cursor.Position;
-            (int, int) mouse = (relativePoint.X, relativePoint.Y);
-            var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId));
-            ws.Send(mes);
-            mouseClick = null;
+            if (!dead)
+            {
+                var relativePoint = Cursor.Position;
+                (int, int) mouse = (relativePoint.X, relativePoint.Y);
+                var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId));
+                ws.Send(mes);
+                mouseClick = null;
+            }
         }
         private void Map_Load(object sender, EventArgs e)
         {
@@ -110,10 +114,20 @@ namespace Predictor_FORM.Forms
             SolidBrush brushR = new SolidBrush(Color.FromArgb(255, 0, 255));
             SolidBrush brushProj = new SolidBrush(Color.FromArgb(255, 165, 0));
             SolidBrush brushNpc = new SolidBrush(Color.Green);
+            int num = 0;
             foreach (var p in players)
             {
                 var c = p.playerClass;
-                g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+                if (c.health > 0)
+                {
+                    g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+
+                }
+                else
+                {
+                    if (num == which) { dead = true; }
+                }
+                num++;
             }
             foreach (var c in projectiles.ToList())
             {
