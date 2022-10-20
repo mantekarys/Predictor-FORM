@@ -13,6 +13,7 @@ namespace Predictor_FORM.Character
         public int health;
         public int damage;
         public (int,int) coordinates;
+        Ability ability;
 
         public abstract void move();//event
         public void takeDamage(int damage)
