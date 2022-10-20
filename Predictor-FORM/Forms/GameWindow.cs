@@ -114,6 +114,7 @@ namespace Predictor_FORM.Forms
             SolidBrush brushR = new SolidBrush(Color.FromArgb(255, 0, 255));
             SolidBrush brushProj = new SolidBrush(Color.FromArgb(255, 165, 0));
             SolidBrush brushNpc = new SolidBrush(Color.Green);
+            SolidBrush brushNpcActivated = new SolidBrush(Color.LightGreen);
             int num = 0;
             foreach (var p in players)
             {
@@ -146,11 +147,14 @@ namespace Predictor_FORM.Forms
 
             foreach (var n in npcs)
             {
-                //if (n == null)
-                //{
-                //    continue;
-                //}
-                g.FillRectangle(brushNpc, n.coordinates.Item1, n.coordinates.Item2, n.size, n.size);
+                if (n.ability.activated)
+                {
+                    g.FillRectangle(brushNpcActivated, n.coordinates.Item1, n.coordinates.Item2, n.size, n.size);
+                }
+                else
+                {
+                    g.FillRectangle(brushNpc, n.coordinates.Item1, n.coordinates.Item2, n.size, n.size);
+                }
             }
         }
         private void GameWindow_FormClosed(object sender, FormClosedEventArgs e)
