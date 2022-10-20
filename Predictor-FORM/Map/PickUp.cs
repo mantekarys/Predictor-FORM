@@ -11,7 +11,7 @@ namespace Predictor_FORM.Map
     {
         public  string name { get; set; }
         public  string description { get; set; }
-        public  int experationTime { get; set; }
+        public  DateTime experationTime { get; set; }
         public  int remainingTime { get; set; }
         public (int, int) coordinates;
         //public abstract void pickedUp(Class @class);

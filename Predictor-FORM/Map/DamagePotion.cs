@@ -10,7 +10,7 @@ namespace Predictor_FORM.Map
     {
         public new string name = "Damage potion";
         public new string description = "Increases damage temporarly";
-        public new int experationTime = 200;
+        public new DateTime experationTime = DateTime.MinValue;
         public new int remainingTime = 200;
 /*        public override void Use()
         {

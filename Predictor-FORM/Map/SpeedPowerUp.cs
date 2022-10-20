@@ -10,7 +10,7 @@ namespace Predictor_FORM.Map
     {
         public new string name = "Speed Power up";
         public new string description = "Increases movement speed";
-        public new int experationTime = 200;
+        public new DateTime experationTime = DateTime.MinValue;
         public new int remainingTime = 200;
 /*        public SpeedPowerUp((int, int) coord)
         {

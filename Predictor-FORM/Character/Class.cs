@@ -11,6 +11,7 @@ namespace Predictor_FORM.Character
     internal class Class : Character
     {
  
+
         public DateTime lastAttack;
         class Message
         {

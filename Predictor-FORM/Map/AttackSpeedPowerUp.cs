@@ -10,7 +10,7 @@ namespace Predictor_FORM.Map
     {
         public new string name = "Attack Speed Power up";
         public new string description = "Increases attack rate";
-        public new int experationTime = 200;
+        public new DateTime experationTime = DateTime.MinValue;
         public new int remainingTime = 200;
 /*        public AttackSpeedPowerUp((int, int) coord)
         {
