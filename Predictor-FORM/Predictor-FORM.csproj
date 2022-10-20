@@ -58,6 +58,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Character\Ability.cs" />
     <Compile Include="Character\Character.cs" />
     <Compile Include="Character\Class.cs" />
     <Compile Include="Character\Npc.cs" />
