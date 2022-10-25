@@ -9,7 +9,7 @@ namespace Predictor_FORM.Character
 {
     internal abstract class Decorator : Character
     {
-        public Character _character;
+        protected Character _character;
 
         public Decorator(Character character)
         {
