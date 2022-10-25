@@ -61,9 +61,13 @@
     <Compile Include="Character\Ability.cs" />
     <Compile Include="Character\Character.cs" />
     <Compile Include="Character\Class.cs" />
+    <Compile Include="Character\DamageDecorator.cs" />
+    <Compile Include="Character\Decorator.cs" />
     <Compile Include="Character\Npc.cs" />
     <Compile Include="Character\Player.cs" />
     <Compile Include="Character\Projectile.cs" />
+    <Compile Include="Character\TypeDecorator.cs" />
+    <Compile Include="Character\WeaponDecorator.cs" />
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

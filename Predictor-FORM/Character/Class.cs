@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using WebSocketSharp;
 using Newtonsoft.Json;
+using System.Drawing;
 
 namespace Predictor_FORM.Character
 {
     internal class Class : Character
     {
- 
-
         public DateTime lastAttack;
         class Message
         {
@@ -28,8 +27,11 @@ namespace Predictor_FORM.Character
             //send other parameters on start or when took an upgrade
         }
 
-        public override void move()
+
+        public override void draw(Graphics g)
         {
+            SolidBrush brushR = new SolidBrush(Color.FromArgb(255, 0, 255));
+            g.FillRectangle(brushR, coordinates.Item1, coordinates.Item2, size, size);
         }
     }
 }

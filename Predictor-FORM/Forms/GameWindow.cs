@@ -29,6 +29,7 @@ namespace Predictor_FORM.Forms
     {
         Map.Map map;
         List<Character.Player> players;
+        
         List<Projectile> projectiles = new List<Projectile>();
         List<PickUp> pickables;
         List<MapObject> mapObjects = new List<MapObject>();
@@ -38,7 +39,8 @@ namespace Predictor_FORM.Forms
         MouseEventArgs mouseClick;
         public WebSocket ws;
         bool dead = false;
-
+        List<Player> previous;
+        List<int> damaged = new List<int>();
 
         List<Npc> npcs = new List<Npc>();
 
@@ -70,8 +72,32 @@ namespace Predictor_FORM.Forms
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
-            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles, this.npcs) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>, List<Npc>)>(e.Data);
+            previous = new List<Player>(players);
             
+            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles, this.npcs) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>, List<Npc>)>(e.Data);
+            if (damaged.Count == 0)
+            {
+                foreach (var item in players)
+                {
+                    damaged.Add(0);
+                }
+            }
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].decoratable = new WeaponDecorator(players[i].playerClass);
+                players[i].decoratable = new TypeDecorator(players[i].decoratable);
+                if (players[i].playerClass.health < previous[i].playerClass.health)
+                {
+                    damaged[i] = 10;
+                }
+                if (damaged[i] > 0)
+                {
+                    players[i].decoratable = new DamageDecorator(players[i].decoratable);
+                    damaged[i]--;
+                }
+                
+            }
+
             if (this.mapObjects.Count > this.traps.Count + this.obstacles.Count || first)
             {
                 this.mapObjects.Clear();
@@ -118,10 +144,16 @@ namespace Predictor_FORM.Forms
             int num = 0;
             foreach (var p in players)
             {
-                var c = p.playerClass;
-                if (c.health > 0)
+                Character.Character c = p.playerClass;
+                if (p.decoratable != null)
                 {
-                    g.FillRectangle(brushR, c.coordinates.Item1, c.coordinates.Item2, c.size, c.size);
+                    c = p.decoratable;
+             
+                }
+                
+                if (p.playerClass.health > 0)
+                {
+                    c.draw(g);
 
                 }
                 else
