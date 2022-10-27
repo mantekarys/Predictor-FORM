@@ -11,6 +11,7 @@ namespace Predictor_FORM.Character
         public string userName;
         public int score = 0;
         public Class playerClass;
+        public Character decoratable;
         public Player()
         {
         }
@@ -18,6 +19,7 @@ namespace Predictor_FORM.Character
         {
             playerClass = c;
             this.userName = userName;
+            decoratable = c;
         }
     }
 }

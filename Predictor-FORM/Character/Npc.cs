@@ -1,6 +1,7 @@
 ﻿using Predictor_FORM.Map;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,14 @@ namespace Predictor_FORM.Character
             this.speed = speed;
             this.health = health;
             this.damage = damage;
-            this.coordinates.Item1 = x;
-            this.coordinates.Item2 = y;
+            this.coordinates = (x, y);
         }
 
-        public override void move()
+
+        public override void draw(Graphics g)
         {
             throw new NotImplementedException();
         }
     }
+
 }
