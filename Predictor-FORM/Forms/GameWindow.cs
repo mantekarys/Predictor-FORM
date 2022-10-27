@@ -69,7 +69,6 @@ namespace Predictor_FORM.Forms
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
-            Console.WriteLine("Received from the server: " + e.Data);
             (players, this.map, pickables, this.projectiles, this.traps, this.obstacles, this.npcs) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>, List<Npc>)>(e.Data);
             
             if (this.mapObjects.Count > this.traps.Count + this.obstacles.Count || first)
