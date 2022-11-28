@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Predictor_FORM.Server
+{
+    abstract class MatchCreation
+    {
+        public abstract void Match(Create create);
+    }
+}

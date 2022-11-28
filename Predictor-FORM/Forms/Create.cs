@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Predictor_FORM.Forms;
+using Predictor_FORM.Server;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.WebSockets;
@@ -18,8 +20,8 @@ namespace Predictor_FORM
 {
     public partial class Create : Form
     {
-        Join join;
-        WebSocket ws;
+        public Join join;
+        public WebSocket ws;
         public Create(WebSocket wsOld)
         {
             InitializeComponent();
@@ -32,16 +34,21 @@ namespace Predictor_FORM
 
         private void CreateMatch_Click(object sender, EventArgs e)
         {
-            var mes = JsonConvert.SerializeObject((752, textBox1.Text));
-            ws.OnMessage += Ws_OnMessage;
-            ws.Send(mes);
-            Thread.Sleep(1000);
+            long total = GC.GetTotalMemory(true);
+            var sw = Stopwatch.StartNew();
+            ProxyCreateMatch proxyCreateMatch= new ProxyCreateMatch();
+            proxyCreateMatch.Match(this);
 
-            join.ws.OnMessage -= Ws_OnMessage;
-            this.Hide();
-            join.Show();
+            //CreateMatch createMatch = new CreateMatch();
+            //createMatch.Match(this);
+            sw.Stop();
+            Console.WriteLine($"Match functions executed {sw.Elapsed}");
+
+            Console.WriteLine($"Diffrence in memory after Match function was executed {GC.GetTotalMemory(true) - total}");
+
         }
-        private void Ws_OnMessage(object sender, MessageEventArgs e)
+
+        public void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received from the server: " + e.Data);
             int matchId, which;
