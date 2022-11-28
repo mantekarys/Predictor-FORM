@@ -14,21 +14,15 @@ namespace Predictor_FORM.Server
         public override void Match(Create create)
         {
             string text = create.textBox1.Text;
-            bool valid = true;
             foreach (char c in text)
             {
                 if (!Char.IsLetterOrDigit(c))
                 {
-                    valid = false;
-                    break;
+                    create.errorProvider1.SetError(create.textBox1, "Match names cannot contain symbols");
+                    return;
                 }
             }
 
-            if (!valid)
-            {
-                create.errorProvider1.SetError(create.textBox1, "Match names cannot contain symbols");
-                return;
-            }
             CreateMatch createMatch= new CreateMatch();
             createMatch.Match(create);
 
