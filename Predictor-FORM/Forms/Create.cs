@@ -43,9 +43,7 @@ namespace Predictor_FORM
             //createMatch.Match(this);
             sw.Stop();
             Console.WriteLine($"Match functions executed {sw.Elapsed}");
-
             Console.WriteLine($"Diffrence in memory after Match function was executed {GC.GetTotalMemory(true) - total}");
-
         }
 
         public void Ws_OnMessage(object sender, MessageEventArgs e)
