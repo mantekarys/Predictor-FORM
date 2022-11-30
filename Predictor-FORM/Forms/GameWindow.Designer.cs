@@ -39,7 +39,7 @@
             this.GameConsole.Name = "GameConsole";
             this.GameConsole.Size = new System.Drawing.Size(130, 41);
             this.GameConsole.TabIndex = 0;
-            this.GameConsole.TextChanged += new System.EventHandler(this.newInput);
+            this.GameConsole.TextChanged += new System.EventHandler(this.NewInput);
             // 
             // GameWindow
             // 

@@ -224,7 +224,7 @@ namespace Predictor_FORM.Forms
             keys.Remove(Keys.LButton);
         }
 
-        private void newInput(object sender, EventArgs e)
+        private void NewInput(object sender, EventArgs e)
         {
             switch (GameConsole.Text)
             {
