@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,18 +9,17 @@ using System.Windows.Forms;
 using Predictor_FORM.Map;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-
 using System.Windows.Threading;
 using System.Windows;
 using Newtonsoft.Json;
 using System.Threading;
-
 
 using WebSocketSharp;
 using Newtonsoft.Json;
 using System.Timers;
 using Timer = System.Timers.Timer;
 using Predictor_FORM.Character;
+using CustomFocuser = System.Windows.Input;
 
 namespace Predictor_FORM.Forms
 {
@@ -49,6 +47,8 @@ namespace Predictor_FORM.Forms
         Form1 form1;
         int matchId = 0;
         bool first = true;
+
+        Keys ConsoleTriggerKey = Keys.None;
 
         internal GameWindow(Map.Map map, List<Character.Player> p, int which, int matchId, WebSocket wsOld)
         {
@@ -116,6 +116,11 @@ namespace Predictor_FORM.Forms
                 var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId));
                 ws.Send(mes);
                 mouseClick = null;
+                if (!ConsoleTriggerKey.Equals(Keys.None))
+                {
+                    keys.Remove(ConsoleTriggerKey);
+                    ConsoleTriggerKey = Keys.None;
+                }
             }
         }
         private void Map_Load(object sender, EventArgs e)
@@ -196,6 +201,11 @@ namespace Predictor_FORM.Forms
 
         private void GameWindow_KeyDown(object sender, KeyEventArgs e)
         {
+            if((Keys)e.KeyData == Keys.Oemtilde)
+            {
+                GameConsole.Enabled = true;
+                GameConsole.Focus();
+            }
             keys.Add((Keys)e.KeyData);
         }
 
@@ -212,6 +222,37 @@ namespace Predictor_FORM.Forms
         private void GameWindow_MouseUp(object sender, MouseEventArgs e)
         {
             keys.Remove(Keys.LButton);
+        }
+
+        private void newInput(object sender, EventArgs e)
+        {
+            switch (GameConsole.Text)
+            {
+                case "use 1":
+                    keys.Add(Keys.D1);
+                    ConsoleTriggerKey=Keys.D1;
+                    EmptyGameConsole();
+                    break;
+                case "use 2":
+                    keys.Add(Keys.D2);
+                    ConsoleTriggerKey=Keys.D2;
+                    EmptyGameConsole();
+                    break;
+                case "use 3":
+                    keys.Add(Keys.D3);
+                    ConsoleTriggerKey=Keys.D3;
+                    EmptyGameConsole();
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+        private void EmptyGameConsole()
+        {
+            GameConsole.Enabled = false;
+            GameConsole.Text = "";
         }
     }
 }

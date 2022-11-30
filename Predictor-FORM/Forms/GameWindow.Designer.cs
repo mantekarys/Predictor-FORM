@@ -28,15 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.GameConsole = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
+            // 
+            // GameConsole
+            // 
+            this.GameConsole.Enabled = false;
+            this.GameConsole.Location = new System.Drawing.Point(750, 22);
+            this.GameConsole.Multiline = true;
+            this.GameConsole.Name = "GameConsole";
+            this.GameConsole.Size = new System.Drawing.Size(130, 41);
+            this.GameConsole.TabIndex = 0;
+            this.GameConsole.TextChanged += new System.EventHandler(this.newInput);
             // 
             // GameWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(707, 703);
+            this.ClientSize = new System.Drawing.Size(884, 711);
+            this.Controls.Add(this.GameConsole);
             this.DoubleBuffered = true;
-            this.MaximumSize = new System.Drawing.Size(725, 750);
-            this.MinimumSize = new System.Drawing.Size(725, 750);
+            this.MaximumSize = new System.Drawing.Size(900, 750);
+            this.MinimumSize = new System.Drawing.Size(900, 750);
             this.Name = "GameWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameWindow";
@@ -47,9 +59,12 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameWindow_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameWindow_MouseUp);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox GameConsole;
     }
 }
