@@ -39,7 +39,9 @@ namespace Predictor_FORM.Forms
         bool dead = false;
         List<Player> previous;
         List<int> damaged = new List<int>();
-
+        readonly Use1Expression Use1 = new Use1Expression();
+        readonly Use2Expression Use2 = new Use2Expression();
+        readonly Use3Expression Use3 = new Use3Expression();
         List<Npc> npcs = new List<Npc>();
 
         MouseEventArgs mousePos;
@@ -223,28 +225,23 @@ namespace Predictor_FORM.Forms
 
         private void NewInput(object sender, EventArgs e)
         {
-            switch (GameConsole.Text)
+
+            if (Use1.Recognize(GameConsole.Text))
             {
-                case "use 1":
-                    keys.Add(Keys.D1);
-                    ConsoleTriggerKey=Keys.D1;
-                    EmptyGameConsole();
-                    break;
-                case "use 2":
-                    keys.Add(Keys.D2);
-                    ConsoleTriggerKey=Keys.D2;
-                    EmptyGameConsole();
-                    break;
-                case "use 3":
-                    keys.Add(Keys.D3);
-                    ConsoleTriggerKey=Keys.D3;
-                    EmptyGameConsole();
-                    break;
-                default:
-                    break;
+                keys.Add(Keys.D1);
+                ConsoleTriggerKey = Keys.D1;
+                EmptyGameConsole(); 
+            }else if (Use2.Recognize(GameConsole.Text))
+            {
+                keys.Add(Keys.D2);
+                ConsoleTriggerKey=Keys.D2;
+                EmptyGameConsole();
+            }else if (Use3.Recognize(GameConsole.Text))
+            {
+                keys.Add(Keys.D3);
+                ConsoleTriggerKey = Keys.D3;
+                EmptyGameConsole();
             }
-
-
         }
         private void EmptyGameConsole()
         {
