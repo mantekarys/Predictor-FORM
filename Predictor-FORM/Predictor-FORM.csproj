@@ -68,6 +68,9 @@
     <Compile Include="Character\Player.cs" />
     <Compile Include="Character\Projectile.cs" />
     <Compile Include="Character\TypeDecorator.cs" />
+    <Compile Include="Character\Use1Expression.cs" />
+    <Compile Include="Character\Use2Expression.cs" />
+    <Compile Include="Character\Use3Expression.cs" />
     <Compile Include="Character\WeaponDecorator.cs" />
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
