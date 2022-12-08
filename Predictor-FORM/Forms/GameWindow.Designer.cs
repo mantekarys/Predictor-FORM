@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.GameConsole = new System.Windows.Forms.TextBox();
+            this.MessageBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // GameConsole
@@ -40,11 +41,24 @@
             this.GameConsole.Size = new System.Drawing.Size(130, 41);
             this.GameConsole.TabIndex = 0;
             this.GameConsole.TextChanged += new System.EventHandler(this.NewInput);
+            this.GameConsole.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameConsole_KeyDown);
+            // 
+            // MessageBox
+            // 
+            this.MessageBox.Enabled = false;
+            this.MessageBox.Location = new System.Drawing.Point(750, 102);
+            this.MessageBox.Multiline = true;
+            this.MessageBox.Name = "MessageBox";
+            this.MessageBox.ReadOnly = true;
+            this.MessageBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.MessageBox.Size = new System.Drawing.Size(130, 324);
+            this.MessageBox.TabIndex = 1;
             // 
             // GameWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(884, 711);
+            this.ClientSize = new System.Drawing.Size(882, 703);
+            this.Controls.Add(this.MessageBox);
             this.Controls.Add(this.GameConsole);
             this.DoubleBuffered = true;
             this.MaximumSize = new System.Drawing.Size(900, 750);
@@ -66,5 +80,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox GameConsole;
+        private System.Windows.Forms.TextBox MessageBox;
     }
 }

@@ -20,6 +20,8 @@ using System.Timers;
 using Timer = System.Timers.Timer;
 using Predictor_FORM.Character;
 using CustomFocuser = System.Windows.Input;
+using Logger = Predictor_FORM.Server.Logger;
+using Predictor_FORM.Server;
 
 namespace Predictor_FORM.Forms
 {
@@ -33,6 +35,8 @@ namespace Predictor_FORM.Forms
         List<MapObject> mapObjects = new List<MapObject>();
         List<Trap> traps = new List<Trap>();
         List<Obstacle> obstacles = new List<Obstacle>();
+        List<string> messages = new List<string>();
+        List<string> shownMessages = new List<string>();
         HashSet<Keys> keys = new HashSet<Keys>();
         MouseEventArgs mouseClick;
         public WebSocket ws;
@@ -44,11 +48,18 @@ namespace Predictor_FORM.Forms
         readonly Use3Expression Use3 = new Use3Expression();
         List<Npc> npcs = new List<Npc>();
 
+        ConcreteMediator m = new ConcreteMediator();
+        P1Colleague c1;
+        P2Colleague c2;
+
         MouseEventArgs mousePos;
         int which;
         Form1 form1;
         int matchId = 0;
         bool first = true;
+        string message;
+
+        Logger log = Logger.getInstance();
 
         Keys ConsoleTriggerKey = Keys.None;
 
@@ -60,6 +71,17 @@ namespace Predictor_FORM.Forms
             this.which = which;
             this.matchId = matchId;
             this.pickables = new List<PickUp>() { new DamagePowerUp((350, 350)) };
+
+            if(which == 0)
+            {
+                c1 = new P1Colleague(m);
+                m.Colleague1 = c1;
+            }
+            else
+            {
+                c2 = new P2Colleague(m);
+                m.Colleague2 = c2;
+            }
 
             ws = wsOld;
             ws.OnMessage += Ws_OnMessage;
@@ -74,7 +96,32 @@ namespace Predictor_FORM.Forms
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             previous = new List<Player>(players);
-            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles, this.npcs) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>, List<Npc>)>(e.Data);
+            (players, this.map, pickables, this.projectiles, this.traps, this.obstacles, this.npcs, this.messages) = JsonConvert.DeserializeObject<(List<Character.Player>, Map.Map, List<PickUp>, List < Projectile >, List<Trap>, List<Obstacle>, List<Npc>, List<string>)>(e.Data);
+            if (which == 0)
+            {
+                c2 = new P2Colleague(m);
+                m.Colleague2 = c2;
+            }
+            else
+            {
+                c1 = new P1Colleague(m);
+                m.Colleague1 = c1;
+            }
+
+            if (messages != null)
+            {
+                if (messages.Count > shownMessages.Count)
+                {
+                    EmptyMessageBox();
+                    shownMessages.Clear();
+                    foreach (var mes in messages)
+                    {
+                        MessageBox.Text += mes.ToString() + "\r\n";
+                        shownMessages.Add(mes);
+                    }
+                }
+            }
+
             if (damaged.Count == 0)
             {
                 foreach (var item in players)
@@ -112,9 +159,10 @@ namespace Predictor_FORM.Forms
             {
                 var relativePoint = Cursor.Position;
                 (int, int) mouse = (relativePoint.X, relativePoint.Y);
-                var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId));
+                var mes = JsonConvert.SerializeObject((keys.ToList(), mouse, which, matchId, message));
                 ws.Send(mes);
                 mouseClick = null;
+                message = null;
                 if (!ConsoleTriggerKey.Equals(Keys.None))
                 {
                     keys.Remove(ConsoleTriggerKey);
@@ -205,6 +253,7 @@ namespace Predictor_FORM.Forms
                 GameConsole.Enabled = true;
                 GameConsole.Focus();
             }
+
             keys.Add((Keys)e.KeyData);
         }
 
@@ -247,6 +296,28 @@ namespace Predictor_FORM.Forms
         {
             GameConsole.Enabled = false;
             GameConsole.Text = "";
+        }
+
+        private void EmptyMessageBox()
+        {
+            MessageBox.Text = "";
+        }
+
+        private void GameConsole_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keys)e.KeyData == Keys.Enter && GameConsole.Enabled)
+            {
+                if (which == 0)
+                {
+                    message = c1.Send(GameConsole.Text);
+                }
+                else
+                {
+                    message = c2.Send(GameConsole.Text);
+                }
+                //message = GameConsole.Text;
+                EmptyGameConsole();
+            }
         }
     }
 }

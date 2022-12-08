@@ -117,10 +117,15 @@
     <Compile Include="Map\Trap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\P2Colleague.cs" />
+    <Compile Include="Server\P1Colleague.cs" />
     <Compile Include="Server\CreateMatch.cs" />
     <Compile Include="Server\Logger.cs" />
     <Compile Include="Server\Match.cs" />
     <Compile Include="Server\MatchCreation.cs" />
+    <Compile Include="Server\ConcreteMediator.cs" />
+    <Compile Include="Server\Colleague.cs" />
+    <Compile Include="Server\Mediator.cs" />
     <Compile Include="Server\ProxyCreateMatch.cs" />
     <Compile Include="Server\Round.cs" />
     <EmbeddedResource Include="Forms\Create.resx">
